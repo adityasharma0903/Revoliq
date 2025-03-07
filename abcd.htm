@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cart Interface</title>
+    <style>
+        :root {
+            --primary: #2F80ED;
+            --success: #27AE60;
+            --danger: #EB5757;
+            --background: #F8F9FA;
+            --text: #2D3436;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+        }
+
+        /* QR Scanner Screen */
+        .scanner-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .qr-overlay {
+            width: 250px;
+            height: 250px;
+            border: 4px solid var(--primary);
+            border-radius: 20px;
+            position: relative;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        /* Virtual Cart Screen */
+        .cart-screen {
+            display: none;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .cart-status {
+            display: flex;
+            align-items: center;
+            color: var(--success);
+        }
+
+        .connected-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .items-list {
+            margin-bottom: 100px;
+        }
+
+        .cart-item {
+            display: flex;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: var(--background);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        }
+
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .item-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .qr-overlay {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- QR Scanner Screen -->
+    <div class="scanner-screen" id="scannerScreen">
+        <h1>Scan Cart QR Code</h1>
+        <p>Align QR code within frame to connect</p>
+        <div class="qr-overlay"></div>
+        <button onclick="connectToCart()" style="padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
+            Simulate Scan (Demo)
+        </button>
+    </div>
+
+    <!-- Virtual Cart Screen -->
+    <div class="cart-screen" id="cartScreen">
+        <header class="cart-header">
+            <h2>Your Smart Cart 🛒</h2>
+            <div class="cart-status">
+                <span class="connected-dot"></span>
+                Connected
+            </div>
+        </header>
+
+        <div class="items-list" id="itemsList">
+            <!-- Items will be dynamically added here -->
+        </div>
+
+        <footer class="cart-footer">
+            <div class="total-section">
+                <span>Total:</span>
+                <span class="total-price" id="totalPrice">$0.00</span>
+            </div>
+            <button class="checkout-btn">Secure Checkout →</button>
+        </footer>
+    </div>
+
+    <script>
+        // Simulated connection
+        function connectToCart() {
+            document.getElementById('scannerScreen').style.display = 'none';
+            document.getElementById('cartScreen').style.display = 'block';
+            initializeCart();
+        }
+
+        // Cart functionality
+        let cartItems = [];
+
+        function initializeCart() {
+            // Simulate WebSocket connection for real-time updates
+            setInterval(updateCart, 2000);
+        }
+
+        function updateCart() {
+            // Simulated real-time updates
+            const newItem = {
+                id: Date.now(),
+                name: `Product ${Math.floor(Math.random() * 100)}`,
+                price: (Math.random() * 50 + 5).toFixed(2),
+                quantity: 1
+            };
+
+            cartItems.push(newItem);
+            renderCart();
+        }
+
+        function renderCart() {
+            const itemsList = document.getElementById('itemsList');
+            const totalPrice = document.getElementById('totalPrice');
+            let total = 0;
+
+            itemsList.innerHTML = '';
+            
+            cartItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="https://via.placeholder.com/80" alt="${item.name}" class="item-image">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p>$${item.price} • ${item.quantity} unit${item.quantity > 1 ? 's' : ''}</p>
+                        <div class="item-controls">
+                            <button class="remove-btn" onclick="removeItem(${item.id})">🗑 Remove</button>
+                            <div class="quantity-control">
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                itemsList.appendChild(itemElement);
+                total += item.price * item.quantity;
+            });
+
+            totalPrice.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function removeItem(itemId) {
+            cartItems = cartItems.filter(item => item.id !== itemId);
+            renderCart();
+        }
+
+        function updateQuantity(itemId, change) {
+            cartItems = cartItems.map(item => {
+                if (item.id === itemId) {
+                    const newQuantity = item.quantity + change;
+                    if (newQuantity > 0) {
+                        return { ...item, quantity: newQuantity };
+                    }
+                }
+                return item;
+            }).filter(item => item.quantity > 0);
+            
+            renderCart();
+        }
+
+        // Initialize demo with sample items
+        window.onload = () => {
+            cartItems = [
+                { id: 1, name: "Organic Almond Milk", price: 4.99, quantity: 2 },
+                { id: 2, name: "Whole Grain Bread", price: 3.49, quantity: 1 }
+            ];
+        };
+    </script>
+</body>
+</html>
