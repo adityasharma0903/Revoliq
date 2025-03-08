@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner - Revoliq</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+      font-family: Arial, sans-serif;
+    }
+    .scanner-container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+    #qr-view {
+      width: 100%;
+      max-width: 400px;
+      height: 300px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #f59e0b;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #f59e0b;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d97706;
+    }
+  </style>
+</head>
+<body>
+  <div class="scanner-container">
+    <h1>QR Code Scanner</h1>
+    <div id="qr-view">QR scanner view will appear here</div>
+    <button onclick="startQrScan()">Start QR Scan</button>
+  </div>
+
+  <script>
+    function startQrScan() {
+      alert('Starting QR code scanner...');
+      // Here you’d integrate actual QR code scanner functionality
+    }
+  </script>
+</body>
+</html>
