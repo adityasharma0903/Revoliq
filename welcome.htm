@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Revoliq</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .icon {
+      font-size: 64px;
+      color: #10b981;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #1f2937;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+    .btn-green {
+      background-color: #10b981;
+    }
+    .btn-green:hover {
+      background-color: #059669;
+    }
+    .btn-yellow {
+      background-color: #f59e0b;
+    }
+    .btn-yellow:hover {
+      background-color: #d97706;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🛒</div>
+    <h1>Welcome to Revoliq</h1>
+    <p>Your ultimate cart experience, simplified and efficient.</p>
+    <button class="btn btn-green" onclick="openBarcodeScanner()">Start Shopping</button>
+    <button class="btn btn-yellow" onclick="openQrScanner()">Connect Cart</button>
+  </div>
+
+  <script>
+    function openBarcodeScanner() {
+      window.open('/barcode-scanner.htm', '_blank');
+    }
+    function openQrScanner() {
+      window.open('/qr-scanner.htm', '_blank');
+    }
+  </script>
+</body>
+</html>
